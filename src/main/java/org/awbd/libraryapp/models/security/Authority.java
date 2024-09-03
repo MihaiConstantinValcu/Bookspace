@@ -1,7 +1,9 @@
 package org.awbd.libraryapp.models.security;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import lombok.*;
+import org.awbd.libraryapp.models.base.BaseEntity;
 
 import java.util.Set;
 
@@ -11,13 +13,9 @@ import java.util.Set;
 @Setter
 @Getter
 @Builder
-public class Authority {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Authority extends BaseEntity {
     private String role;
 
     @ManyToMany(mappedBy = "authorities")
-    private Set<User> users;
+    private Set<Member> members;
 }

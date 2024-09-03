@@ -3,8 +3,8 @@ package org.awbd.libraryapp.services.security;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.awbd.libraryapp.models.security.Authority;
-import org.awbd.libraryapp.models.security.User;
-import org.awbd.libraryapp.repositories.security.UserRepository;
+import org.awbd.libraryapp.models.security.Member;
+import org.awbd.libraryapp.repositories.security.MemberRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,24 +23,24 @@ import java.util.stream.Collectors;
 @Slf4j
 public class JpaUserDetailsService implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user;
+        Member member;
 
-        Optional<User> userOpt = userRepository.findByUsername(username);
+        Optional<Member> userOpt = memberRepository.findByUsername(username);
         if (userOpt.isPresent())
-            user = userOpt.get();
+            member = userOpt.get();
         else
             throw new UsernameNotFoundException("Username: " + username);
 
-        log.info(user.toString());
+        log.info(member.toString());
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(), user.getEnabled(), user.getAccountNonExpired(),
-                user.getCredentialsNonExpired(), user.getAccountNonLocked(),
-                getAuthorities(user.getAuthorities()));
+        return new org.springframework.security.core.userdetails.User(member.getUsername(),
+                member.getPassword(), member.getEnabled(), member.getAccountNonExpired(),
+                member.getCredentialsNonExpired(), member.getAccountNonLocked(),
+                getAuthorities(member.getAuthorities()));
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities(Set<Authority> authorities) {

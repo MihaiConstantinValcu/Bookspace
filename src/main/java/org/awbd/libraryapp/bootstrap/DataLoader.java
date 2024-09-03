@@ -1,10 +1,11 @@
 package org.awbd.libraryapp.bootstrap;
 
 import lombok.AllArgsConstructor;
+import org.awbd.libraryapp.enums.Authorities;
 import org.awbd.libraryapp.models.security.Authority;
-import org.awbd.libraryapp.models.security.User;
+import org.awbd.libraryapp.models.security.Member;
 import org.awbd.libraryapp.repositories.security.AuthorityRepository;
-import org.awbd.libraryapp.repositories.security.UserRepository;
+import org.awbd.libraryapp.repositories.security.MemberRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -14,35 +15,35 @@ import org.springframework.stereotype.Component;
 public class DataLoader implements CommandLineRunner {
 
     private AuthorityRepository authorityRepository;
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
     private PasswordEncoder passwordEncoder;
 
 
     private void loadUserData() {
-        if (userRepository.count() == 0) {
-            Authority adminRole = authorityRepository.save(Authority.builder().role("ROLE_ADMIN").build());
-            Authority guestRole = authorityRepository.save(Authority.builder().role("ROLE_GUEST").build());
+        if (memberRepository.count() == 0) {
+            Authority adminRole = authorityRepository.save(Authority.builder().role(Authorities.ROLE_ADMIN.name()).build());
+            Authority memberRole = authorityRepository.save(Authority.builder().role(Authorities.ROLE_MEMBER.name()).build());
 
-            User admin = User.builder()
+            Member admin = Member.builder()
                     .username("admin")
                     .password(passwordEncoder.encode("12345"))
                     .authority(adminRole)
                     .build();
 
-            User guest = User.builder()
-                    .username("guest")
+            Member member = Member.builder()
+                    .username("member")
                     .password(passwordEncoder.encode("12345"))
-                    .authority(guestRole)
+                    .authority(memberRole)
                     .build();
 
-            userRepository.save(admin);
-            userRepository.save(guest);
+            memberRepository.save(admin);
+            memberRepository.save(member);
         }
     }
 
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         loadUserData();
     }
 }

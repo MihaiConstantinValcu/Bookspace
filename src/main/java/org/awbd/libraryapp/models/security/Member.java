@@ -2,7 +2,11 @@ package org.awbd.libraryapp.models.security;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.awbd.libraryapp.models.Borrow;
+import org.awbd.libraryapp.models.Membership;
+import org.awbd.libraryapp.models.base.BaseEntity;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -11,17 +15,20 @@ import java.util.Set;
 @Setter
 @Getter
 @Builder
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Member extends BaseEntity {
 
     private String username;
     private String password;
 
+    @OneToMany(mappedBy = "member")
+    private List<Borrow> borrows;
+
+    @OneToMany(mappedBy = "member")
+    private List<Membership> memberships;
+
     @Singular
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_authority", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")}, inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
+    @JoinTable(name = "member_authority", joinColumns = {@JoinColumn(name = "USER_ID", referencedColumnName = "ID")}, inverseJoinColumns = {@JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID")})
     private Set<Authority> authorities;
 
     @Builder.Default
