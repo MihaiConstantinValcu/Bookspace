@@ -13,6 +13,8 @@ import java.util.Set;
 @Setter
 public class Author extends BaseEntity {
 
+    private String name;
+
     @OneToMany(mappedBy = "author")
     private Set<Book> books;
 }

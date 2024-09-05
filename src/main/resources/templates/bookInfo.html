@@ -2,12 +2,12 @@
 <html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
+    <title>Movie Info</title>
     <script src="/webjars/jquery/3.6.0/jquery.min.js"></script>
     <script src="/webjars/bootstrap/5.3.2/js/bootstrap.min.js"></script>
     <link href="/webjars/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="/webjars/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-
+</head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -69,26 +69,57 @@
         </div>
     </nav>
 </div>
-<div class="container" style="margin-top: 20px">
-    <div class="col-md-6 col-md-offset-3">
-        <form class="form-signin" method="post" th:action="perform_login">
-            <h2 class="form-signin-heading">Sign in ....</h2>
-            <p>
-            <p class="text-danger" th:if="${param.error}">Invalid user or password</p>
-            <label class="sr-only" for="username">Username</label>
-            <input autofocus class="form-control" id="username" name="username" placeholder="Username" required
-                   type="text">
-            </p>
-            <p>
-                <label class="sr-only" for="password">Password</label>
-                <input class="form-control" id="password" name="password" placeholder="Password" required
-                       type="password">
-            </p>
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="pannel-group">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title" th:text="${book.title}">Title</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h5>Genres:</h5>
+                            </div>
+                            <div class="col-md-9">
+                                <ul>
+                                    <li th:each="genre : ${book.genres}" th:text="${genre.name}">genre</li>
+                                </ul>
+                            </div>
+                        </div>
 
-
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        </form>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Author</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p th:text="${book.author?.name ?: 'Unknown Author'}">author</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h1 class="panel-title">Publisher</h1>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p th:text="${book.publisher?.name ?: 'Unknown Publishe'}">publisher</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
+
 </div>
 </body>
 </html>
